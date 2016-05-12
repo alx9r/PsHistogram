@@ -37,6 +37,14 @@ Describe 'make histogram data' {
         }
         $r = $records | Get-Bins @splat -Strategy 'DateTime'
 
+        $i=0
+        foreach ( $record in $r )
+        {
+            Write-Host "==== $i ===="
+            Write-Host $record
+            $i++
+        }
+
         $r.Count | Should be '10'
         $r[0].Interval | Should be '2016W09'
         $r[0].Aggregate | Should be '5'
