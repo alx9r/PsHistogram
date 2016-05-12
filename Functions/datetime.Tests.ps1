@@ -90,7 +90,7 @@ Describe 'Get-DateTimeIntervalLabel' {
 }
 Describe 'DateTime environment assumptions' {
     $i = [System.Globalization.DateTimeFormatInfo]::InvariantInfo
-    It 'has properties' {
+    It 'has correct properties' {
         $i.Calendar -is [System.Globalization.GregorianCalendar] | Should be $true
         $i.FirstDayOfWeek | Should be 'Sunday'
         $i.CalendarWeekRule | Should be 'FirstDay'

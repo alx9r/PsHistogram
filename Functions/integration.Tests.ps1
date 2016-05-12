@@ -1,10 +1,18 @@
 Import-Module PsHistogram -Force
 
+$df = 'yyyy-MM-dd HH:mm:ss.ffff'
 Describe 'make histogram data' {
+    $records = "$($PSCommandPath | Split-Path -Parent)\..\Resources\sample1.xml" |
+        Resolve-Path |
+        Import-Clixml
+    It 'sample data matches assumptions.' {
+        $records.Count | Should be 283
+        $extremes = $records | Get-Extremes {$_.Time}
+
+        $extremes.Minimum.ToString($df) | Should be '2016-02-22 16:48:47.1630'
+        $extremes.Maximum.ToString($df) | Should be '2016-05-07 03:29:41.8263'
+    }
     It 'correctly converts sample (months)' {
-        $records = "$($PSCommandPath | Split-Path -Parent)\..\Resources\sample1.xml" |
-            Resolve-Path |
-            Import-Clixml
         $splat = @{
             Independent = {$_.Time}
             Dependent   = {$_}
@@ -21,9 +29,6 @@ Describe 'make histogram data' {
         $r[3].Aggregate | Should be '65'
     }
     It 'correctly converts sample (weeks)' {
-        $records = "$($PSCommandPath | Split-Path -Parent)\..\Resources\sample1.xml" |
-            Resolve-Path |
-            Import-Clixml
         $splat = @{
             Independent = {$_.Time}
             Dependent   = {$_}
