@@ -95,6 +95,9 @@ Describe 'DateTime environment assumptions' {
         $i.FirstDayOfWeek | Should be 'Sunday'
         $i.CalendarWeekRule | Should be 'FirstDay'
     }
+    It 'is in correct timezone' {
+        [System.TimeZone]::CurrentTimeZone.StandardName | Should be 'Pacific Standard Time'
+    }
 }
 Describe 'Get-WeekOfYear' {
     $tests = @(
