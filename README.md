@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/jl2k058mu8fluq0p/branch/master?svg=true&passingText=master%20-%20OK)](https://ci.appveyor.com/project/alx9r/PsHistogram/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/l50dfri7e3ilr52m?svg=true&passingText=master%20-%20OK)](https://ci.appveyor.com/project/alx9r/PsHistogram/branch/master)
 
 ## PowerShell Module for Showing Data as a Histogram
 
