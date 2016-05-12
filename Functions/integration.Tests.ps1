@@ -3,7 +3,7 @@ Import-Module PsHistogram -Force
 $df = 'yyyy-MM-dd HH:mm:ss.ffff'
 Describe timezone {
     It 'test runner is in acceptable timezone' {
-        [System.TimeZone]::CurrentTimeZone.StandardName -in 'Pacific Standard Time','Greenwich Standard Time' | 
+        [System.TimeZone]::CurrentTimeZone.StandardName -in 'Pacific Standard Time','Greenwich Standard Time' |
             Should be $true
     }
 }
@@ -35,14 +35,6 @@ Describe 'make histogram data' {
             MaxBins     = 30
         }
         $r = $records | Get-Bins @splat -Strategy 'DateTime'
-
-        $i=0
-        foreach ( $record in $r )
-        {
-            Write-Host "==== $i ===="
-            Write-Host $record
-            $i++
-        }
 
         if ([System.TimeZone]::CurrentTimeZone.StandardName -eq 'Pacific Standard Time')
         {
