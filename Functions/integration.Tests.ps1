@@ -1,17 +1,16 @@
 Import-Module PsHistogram -Force
 
 $df = 'yyyy-MM-dd HH:mm:ss.ffff'
+Describe timezone {
+    It 'test runner is in acceptable timezone' {
+        [System.TimeZone]::CurrentTimeZone.StandardName -in 'Pacific Standard Time','Greenwich Standard Time' | 
+            Should be $true
+    }
+}
 Describe 'make histogram data' {
     $records = "$($PSCommandPath | Split-Path -Parent)\..\Resources\sample1.xml" |
         Resolve-Path |
         Import-Clixml
-    It 'sample data matches assumptions.' {
-        $records.Count | Should be 283
-        $extremes = $records | Get-Extremes {$_.Time}
-
-        $extremes.Minimum.ToString($df) | Should be '2016-02-22 16:48:47.1630'
-        $extremes.Maximum.ToString($df) | Should be '2016-05-07 03:29:41.8263'
-    }
     It 'correctly converts sample (months)' {
         $splat = @{
             Independent = {$_.Time}
@@ -45,10 +44,22 @@ Describe 'make histogram data' {
             $i++
         }
 
-        $r.Count | Should be '10'
-        $r[0].Interval | Should be '2016W09'
-        $r[0].Aggregate | Should be '5'
-        $r[1].Aggregate | Should be '0'
-        $r[9].Aggregate | Should be '46'
+        if ([System.TimeZone]::CurrentTimeZone.StandardName -eq 'Pacific Standard Time')
+        {
+            $r.Count | Should be '10'
+            $r[0].Interval | Should be '2016W09'
+            $r[0].Aggregate | Should be '5'
+            $r[1].Aggregate | Should be '0'
+            $r[9].Aggregate | Should be '46'
+        }
+        else
+        {
+            # AppVeyor uses Greenwich Standard Time
+            $r.Count | Should be '11'
+            $r[0].Interval | Should be '2016W09'
+            $r[0].Aggregate | Should be '5'
+            $r[1].Aggregate | Should be '0'
+            $r[9].Aggregate | Should be '52'
+        }
     }
 }
