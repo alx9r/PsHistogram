@@ -36,7 +36,7 @@ os:
 install:
   - cinst pester
   - ps: (New-Object System.Net.WebClient).DownloadFile('https://codeload.github.com/alx9r/ToolFoundations/zip/master',"$HOME\master.zip")
-  - ps: '[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null; [System.IO.Compression.ZipFile]::ExtractToDirectory("$HOME\master.zip",$env:PSModulePath.Split(';')[0])'
+  - ps: '[System.Reflection.Assembly]::LoadWithPartialName("System.IO.Compression.FileSystem") | Out-Null; [System.IO.Compression.ZipFile]::ExtractToDirectory("$HOME\master.zip",$env:PSModulePath.Split(";")[0])'
   - ps: Rename-Item "$($env:PSModulePath.Split(';')[0])\ToolFoundations-master" 'ToolFoundations'
   - ps: Import-Module ToolFoundations
 
