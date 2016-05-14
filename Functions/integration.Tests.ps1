@@ -36,21 +36,19 @@ Describe 'make histogram data' {
         }
         $r = $records | Get-Bins @splat -Strategy 'DateTime'
 
+        $r.Count | Should be '11'
+        $r[0].Interval | Should be '2016W09'
+        $r[0].Aggregate | Should be '5'
+        $r[1].Aggregate | Should be '0'
+
         if ([System.TimeZone]::CurrentTimeZone.StandardName -eq 'Pacific Standard Time')
         {
-            $r.Count | Should be '10'
-            $r[0].Interval | Should be '2016W09'
-            $r[0].Aggregate | Should be '5'
-            $r[1].Aggregate | Should be '0'
             $r[9].Aggregate | Should be '46'
         }
         else
         {
             # AppVeyor uses Greenwich Standard Time
-            $r.Count | Should be '11'
-            $r[0].Interval | Should be '2016W09'
-            $r[0].Aggregate | Should be '5'
-            $r[1].Aggregate | Should be '0'
+
             $r[9].Aggregate | Should be '52'
         }
     }

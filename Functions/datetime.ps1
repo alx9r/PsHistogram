@@ -91,8 +91,15 @@ function Get-QuantizedDateTime
     {
         if ( $Unit -eq 'week' )
         {
-            return &(gbpm) | >> |
-                Get-QuantizedDateTimeWeekStrategy
+            $dayOfWeek = [int]$Value.DayOfWeek
+
+            $Value = $Value.AddDays(
+                    @{
+                        'ceiling' = 6-$dayOfWeek
+                        'floor'   = -$dayOfWeek
+                    }.$Method
+                )
+            $Unit = 'day'
         }
 
         $splat = @{}
@@ -124,36 +131,6 @@ function Get-QuantizedDateTime
         }
 
         return $output
-    }
-}
-function Get-QuantizedDateTimeWeekStrategy
-{
-    [CmdletBinding()]
-    param
-    (
-        [Parameter(Mandatory = $true,
-                   ValueFromPipeline = $true,
-                   ValueFromPipelineByPropertyName = $true)]
-        [DateTime]
-        $Value,
-
-        [Parameter(Position = 1,
-                   Mandatory = $true,
-                   ValueFromPipelineByPropertyName = $true)]
-        [ValidateSet('floor','ceiling')]
-        [string]
-        $Method
-    )
-    process
-    {
-        $dayOfWeek = [int]$Value.DayOfWeek
-
-        $Value.AddDays(
-                @{
-                    'ceiling' = 7-$dayOfWeek
-                    'floor'   = -$dayOfWeek
-                }.$Method
-            )
     }
 }
 function Get-DateTimeIntervalLabel
