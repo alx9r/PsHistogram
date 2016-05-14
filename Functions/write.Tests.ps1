@@ -59,7 +59,7 @@ Describe Write-Histogram {
                     Aggregate = $_[1]
                 }
             } |
-            ConvertTo-Histogram    
+            ConvertTo-Histogram
 
         $r = $histogram | Write-Histogram -Width 12 -ToString
         $r[0] | Should be '  22     333'
