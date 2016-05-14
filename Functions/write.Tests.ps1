@@ -24,21 +24,22 @@ Describe ConvertTo-Histogram {
     }
 }
 Describe Write-Histogram {
+    It 'writes.' {
     $histogram = @(
-        @('a',1),
-        @('b',3),
-        @('c',6),
-        @('d',3),
-        @('e',1)
-    ) |
-        % {
-            New-Object psobject -Property @{
-                Interval = $_[0]
-                Aggregate = $_[1]
-            }
-        } |
-        ConvertTo-Histogram
-    It 'does.' {
+            @('a',1),
+            @('b',3),
+            @('c',6),
+            @('d',3),
+            @('e',1)
+        ) |
+            % {
+                New-Object psobject -Property @{
+                    Interval = $_[0]
+                    Aggregate = $_[1]
+                }
+            } |
+            ConvertTo-Histogram
+
         $r = $histogram | Write-Histogram -Width 12 -ToString
         $r[0] | Should be '  1        6'
         $r[1] | Should be 'a ----------'
@@ -46,6 +47,22 @@ Describe Write-Histogram {
         $r[3] | Should be 'c XXXXXXXXXX'
         $r[4] | Should be 'd XXXX------'
         $r[5] | Should be 'e ----------'
+    }
+    It 'correctly formats multi-digit labels.' {
+        $histogram = @(
+            @('a',22),
+            @('e',333)
+        ) |
+            % {
+                New-Object psobject -Property @{
+                    Interval = $_[0]
+                    Aggregate = $_[1]
+                }
+            } |
+            ConvertTo-Histogram
+
+        $r = $histogram | Write-Histogram -Width 12 -ToString
+        $r[0] | Should be '  22     333'
     }
 }
 Describe Get-BarLength {

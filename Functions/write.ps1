@@ -76,7 +76,7 @@ function Write-Histogram
         $lhLabel = $Range.Minimum.ToString()
         $rhLabel = $Range.Maximum.ToString()
         $c = $lhLabel.Length
-        $e = $lhLabel.Length
+        $e = $rhLabel.Length
         $a = $IntervalLabelLength
         $b = 1
         $d = $Width-$a-$b-$c-$e

@@ -18,7 +18,7 @@ Describe 'Get-BinDomains (DateTime)' {
         $r[11].LowerBound.ToString($df) | Should be '2000-12-01 00:00:00.0000'
         $r[11].UpperBound.ToString($df) | Should be '2001-01-01 00:00:00.0000'
     }
-    It 'correctly produces bins (weeks)' {
+    It 'correctly produces bins (weeks) (1)' {
         $splat = @{
             Minimum = [DateTime]::Parse('2000-01-01')
             Maximum = [DateTime]::Parse('2000-02-01')
@@ -34,17 +34,34 @@ Describe 'Get-BinDomains (DateTime)' {
         $r[5].LowerBound.ToString($df) | Should be '2000-01-30 00:00:00.0000'
         $r[5].UpperBound.ToString($df) | Should be '2000-02-06 00:00:00.0000'
     }
+    It 'correctly produces bins (weeks) (2)' {
+        $splat = @{
+            Minimum = [DateTime]::Parse('2016-01-28 14:30:12.0455')
+            Maximum = [DateTime]::Parse('2016-05-14 04:28:50.8995')
+            Maxbins = 30
+            Strategy = 'DateTime'
+        }
+        $r = Get-BinDomains @splat
+
+        $r.Count | Should be 16
+        $r[0].LowerBound.ToString($df) | Should be '2016-01-24 00:00:00.0000'
+        $r[0].UpperBound.ToString($df) | Should be '2016-01-31 00:00:00.0000'
+        $r[0].Interval | Should be '2016W05'
+        $r[15].LowerBound.ToString($df) | Should be '2016-05-08 00:00:00.0000'
+        $r[15].UpperBound.ToString($df) | Should be '2016-05-15 00:00:00.0000'
+    }
 }
 Describe 'Get-QuantizedDateTime' {
     $tests = @(
+        @('1999-12-31','ceiling','week','2000-01-02 00:00:00.0000'),
+        @('2016-01-24 14:30:12.0455','floor','week','2016-01-24 00:00:00.0000'),
         @('2000-01-01', 'ceiling', 'month', '2000-02-01 00:00:00.0000'),
         @('2000-01-31', 'floor',   'month', '2000-01-01 00:00:00.0000'),
         @('2000-01-10',    'ceiling', 'year',  '2001-01-01 00:00:00.0000'),
         @('2000-01-10',    'floor',   'year',  '2000-01-01 00:00:00.0000'),
         @('2000-01-10 10:00', 'ceiling', 'day', '2000-01-11 00:00:00.0000'),
         @('2000-01-10 10:01:5.1234', 'ceiling', 'second', '2000-01-10 10:01:06.0000'),
-        @('2000-01-01','floor','week','1999-12-26 00:00:00.0000'),
-        @('1999-12-31','ceiling','week','2000-01-02 00:00:00.0000')
+        @('2000-01-01','floor','week','1999-12-26 00:00:00.0000')
     ) |
         % {
             New-Object psobject -Property @{
