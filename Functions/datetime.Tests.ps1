@@ -50,6 +50,20 @@ Describe 'Get-BinDomains (DateTime)' {
         $r[15].LowerBound.ToString($df) | Should be '2016-05-08 00:00:00.0000'
         $r[15].UpperBound.ToString($df) | Should be '2016-05-15 00:00:00.0000'
     }
+    It 'correctly produces bins (hours)' {
+        $splat = @{
+            Minimum = [DateTime]::Parse('2016-05-16 11:41:53.7898')
+            Maximum = [DateTime]::Parse('2016-05-16 15:29:22.7822')
+            Maxbins = 30
+            Strategy = 'DateTime'
+        }
+        $r = Get-BinDomains @splat
+
+        $r.Count | Should be 5
+        $r[0].LowerBound.ToString($df) | Should be '2016-05-16 11:00:00.0000'
+        $r[0].UpperBound.ToString($df) | Should be '2016-05-16 12:00:00.0000'
+        $r[0].Interval | Should be '11'
+    }
 }
 Describe 'Get-QuantizedDateTime' {
     $tests = @(

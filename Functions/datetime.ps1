@@ -29,7 +29,7 @@ function Get-BinDomainsDateTime
                     @( 'Millisecond', $timeSpan.TotalMilliseconds ),
                     @( 'Second', $timeSpan.TotalSeconds   ),
                     @( 'Minute', $timeSpan.TotalMinutes   ),
-                    @( 'Hour',   $timeSpan.TotalMinutes   ),
+                    @( 'Hour',   $timeSpan.TotalHours   ),
                     @( 'Day',    $timeSpan.TotalDays      ),
                     @( 'Week',   ($timeSpan.TotalDays/7)    ),
                     @( 'Month',  ($timeSpan.TotalDays/28)   ),
